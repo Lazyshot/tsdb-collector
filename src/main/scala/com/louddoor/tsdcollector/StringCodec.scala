@@ -14,7 +14,7 @@ class StringCodec extends CodecFactory[String, String] {
       def pipelineFactory = new ChannelPipelineFactory {
         def getPipeline = {
           val pipeline = Channels.pipeline()
-          pipeline.addLast("frameDecoder", new DelimiterBasedFrameDecoder(100, Delimiters.lineDelimiter: _*))
+          pipeline.addLast("frameDecoder", new DelimiterBasedFrameDecoder(2500, Delimiters.lineDelimiter: _*))
           pipeline.addLast("stringDecoder", new StringDecoder(CharsetUtil.UTF_8))
           pipeline.addLast("stringEncoder", new StringEncoder(CharsetUtil.UTF_8))
           pipeline
