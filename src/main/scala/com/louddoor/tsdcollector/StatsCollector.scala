@@ -17,6 +17,7 @@ case class Metric(name: String, tags: Seq[String])
 object StatsCollector extends TwitterServer {
   val flushInterval = flag("flush", 10.seconds, "Flush Interval")
   val aggrFunction = flag("aggr", "sum", "Aggregate Function (sum/avg/max/min) - coming soon")
+  val sendZeroes = flag("sendzeroes", false, "Keep track of seen metrics and send zeros on no increments")
   val host = flag("host", new InetSocketAddress(4242), "OpenTSDB host")
   val bind = flag("bind", new InetSocketAddress(8084), "Hostname/Port to bind to")
 
@@ -55,6 +56,9 @@ object StatsCollector extends TwitterServer {
       snapshot = metrics.toMap
       currentMetrics = pastMetrics.toSet
       metrics.clear
+
+      if (sendZeroes())
+        pastMetrics.clear
     }
 
     if (snapshot.size == 0 && pastMetrics.size == 0)
