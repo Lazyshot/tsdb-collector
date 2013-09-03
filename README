@@ -1,0 +1,5 @@
+# TSDCollector
+
+Stats Collector for use with TSDB
+
+Gathers data collected using the same syntax as the current OpenTSDB API.
